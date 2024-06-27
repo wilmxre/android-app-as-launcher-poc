@@ -17,22 +17,6 @@ const Stack = createNativeStackNavigator();
 const { LauncherModule } = NativeModules;
 
 function HomeScreen() {
-  useEffect(() => {
-    const addPin = async () => {
-      try {
-        const isPinned = await RNLockTask?.isAppInLockTaskMode();
-
-        if (!isPinned && AppState.currentState === "active") {
-          RNLockTask?.startLockTask();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    // addPin();
-  }, []);
-
   const setAsDefaultLauncher = () => {
     LauncherModule.setAsDefaultLauncher();
   };
@@ -41,15 +25,27 @@ function HomeScreen() {
     LauncherModule.openDefaultAppsSettings();
   };
 
+  const addPin = async () => {
+    try {
+      const isPinned = await RNLockTask?.isAppInLockTaskMode();
+
+      if (!isPinned && AppState.currentState === "active") {
+        RNLockTask?.startLockTask();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
       <StatusBar style="auto" />
       <Button title="Set as Default Launcher" onPress={setAsDefaultLauncher} />
       <Button
         title="Restore Default Launcher"
         onPress={openDefaultAppsSettings}
       />
+      <Button title="Pin App" onPress={addPin} />
     </View>
   );
 }

@@ -58,4 +58,8 @@ class MainActivity : ReactActivity() {
       // because it's doing more than [Activity.moveTaskToBack] in fact.
       super.invokeDefaultOnBackPressed()
   }
+
+    override fun onBackPressed() {
+        // Do nothing or handle accordingly to prevent exiting the launcher
+    }
 }
