@@ -2,6 +2,14 @@
   "expo": {
     "name": "loopeli-empty-with-kiosk",
     "slug": "loopeli-empty-with-kiosk",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "android": {
+      "package": "com.k.laci.loopeliemptywithkiosk"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3a523028-1d63-4b0e-b874-295af32ee298"
+      }
+    }
   }
 }
