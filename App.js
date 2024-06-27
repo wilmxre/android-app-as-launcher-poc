@@ -2,10 +2,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { AppState, StyleSheet, Text, View } from "react-native";
+import {
+  AppState,
+  StyleSheet,
+  Text,
+  View,
+  NativeModules,
+  Button,
+} from "react-native";
 import RNLockTask from "react-native-lock-task";
 
 const Stack = createNativeStackNavigator();
+
+const { LauncherModule } = NativeModules;
 
 function HomeScreen() {
   useEffect(() => {
@@ -21,13 +30,26 @@ function HomeScreen() {
       }
     };
 
-    addPin();
+    // addPin();
   }, []);
+
+  const setAsDefaultLauncher = () => {
+    LauncherModule.setAsDefaultLauncher();
+  };
+
+  const openDefaultAppsSettings = () => {
+    LauncherModule.openDefaultAppsSettings();
+  };
 
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
       <StatusBar style="auto" />
+      <Button title="Set as Default Launcher" onPress={setAsDefaultLauncher} />
+      <Button
+        title="Restore Default Launcher"
+        onPress={openDefaultAppsSettings}
+      />
     </View>
   );
 }
@@ -48,5 +70,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    gap: 64,
   },
 });
