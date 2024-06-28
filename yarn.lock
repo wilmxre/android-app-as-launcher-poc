@@ -5583,6 +5583,10 @@ rimraf@~2.6.2:
   dependencies:
     glob "^7.1.3"
 
+"rn-foreground-service@github:wilmxre/rn-foreground-service":
+  version "2.1.0"
+  resolved "https://codeload.github.com/wilmxre/rn-foreground-service/tar.gz/68c569caa99b7fcc323bcac1f1f34acee261130d"
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
