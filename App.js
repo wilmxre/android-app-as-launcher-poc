@@ -2,9 +2,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { AppState, StyleSheet, Text, View, Button } from "react-native";
+import {
+  AppState,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  NativeModules,
+} from "react-native";
 import RNLockTask from "react-native-lock-task";
 import ReactNativeForegroundService from "rn-foreground-service";
+
+const { PermissionModule } = NativeModules;
 
 const Stack = createNativeStackNavigator();
 
@@ -60,12 +69,32 @@ function HomeScreen() {
     ReactNativeForegroundService.stopAll();
   };
 
+  const requestCoarseLocation = async () => {
+    try {
+      const granted = await PermissionModule.requestCoarseLocation();
+      alert(granted);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const checkSelfPermission = async () => {
+    try {
+      const granted = await PermissionModule.checkSelfPermission();
+      alert(granted);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
       <StatusBar style="auto" />
       <Button onPress={startTask} title="Start The foreground Service" />
       <Button onPress={stopTask} title="Stop The foreground Service" />
+      <Button onPress={requestCoarseLocation} title="Request Coarse Location" />
+      <Button onPress={checkSelfPermission} title="Check Self Permission" />
     </View>
   );
 }
