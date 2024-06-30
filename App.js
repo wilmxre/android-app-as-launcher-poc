@@ -9,6 +9,7 @@ import {
   View,
   Button,
   NativeModules,
+  PermissionsAndroid,
 } from "react-native";
 import RNLockTask from "react-native-lock-task";
 import ReactNativeForegroundService from "rn-foreground-service";
@@ -18,6 +19,15 @@ const { PermissionModule } = NativeModules;
 const Stack = createNativeStackNavigator();
 
 const INTERVAL = 15 * 60 * 1000; // 15 minutes
+
+const requestCoarseLocation = async () => {
+  const granted = await PermissionsAndroid.requestMultiple([
+    PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+  ]);
+
+  console.log("granted", granted);
+  return granted;
+};
 
 function HomeScreen() {
   useEffect(() => {
@@ -69,24 +79,6 @@ function HomeScreen() {
     ReactNativeForegroundService.stopAll();
   };
 
-  const requestCoarseLocation = async () => {
-    try {
-      const granted = await PermissionModule.requestCoarseLocation();
-      alert(granted);
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  const checkSelfPermission = async () => {
-    try {
-      const granted = await PermissionModule.checkSelfPermission();
-      alert(granted);
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
@@ -94,7 +86,6 @@ function HomeScreen() {
       <Button onPress={startTask} title="Start The foreground Service" />
       <Button onPress={stopTask} title="Stop The foreground Service" />
       <Button onPress={requestCoarseLocation} title="Request Coarse Location" />
-      <Button onPress={checkSelfPermission} title="Check Self Permission" />
     </View>
   );
 }
