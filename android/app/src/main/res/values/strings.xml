@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">loopeli-empty-with-kiosk</string>
+    <string name="enabled">Enabled</string>
 </resources>
