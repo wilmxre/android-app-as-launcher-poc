@@ -18,74 +18,107 @@ const { PermissionModule } = NativeModules;
 
 const Stack = createNativeStackNavigator();
 
-const INTERVAL = 15 * 60 * 1000; // 15 minutes
-
-const requestCoarseLocation = async () => {
-  const granted = await PermissionsAndroid.requestMultiple([
-    PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-  ]);
-
-  console.log("granted", granted);
-  return granted;
-};
+const INTERVAL = 2 * 60 * 1000; // 2 minutes
 
 function HomeScreen() {
   useEffect(() => {
-    const addPin = async () => {
-      try {
-        const isPinned = await RNLockTask?.isAppInLockTaskMode();
-
-        if (!isPinned && AppState.currentState === "active") {
-          RNLockTask?.startLockTask();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    addPin();
-  }, []);
-
-  useEffect(() => {
-    ReactNativeForegroundService.add_task(() => log(), {
+    ReactNativeForegroundService.add_task(() => console.log("hello"), {
       delay: INTERVAL,
       onLoop: true,
-      taskId: "taskid",
-      onError: (e) => console.log(`Error logging:`, e),
+      taskId: "1244",
     });
   }, []);
 
-  const startTask = () => {
+  const startTask = async () => {
     ReactNativeForegroundService.start({
       id: 1244,
       title: "Foreground Service",
-      message: "We are live World",
+      message: "Testing Foreground Service",
       icon: "ic_launcher",
-      button: true,
-      button2: true,
-      buttonText: "Button",
-      button2Text: "Anther Button",
-      buttonOnPress: "cray",
       setOnlyAlertOnce: true,
-      color: "#000000",
-      progress: {
-        max: 100,
-        curr: 50,
-      },
+      color: "#d399f2",
     });
   };
 
-  const stopTask = () => {
-    ReactNativeForegroundService.stopAll();
+  const stopTask = async () => {
+    await ReactNativeForegroundService.stopAll();
+  };
+
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        alert("You can use the location");
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const requestNotificationSettings = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the notification");
+        alert("You can use the notification");
+      } else {
+        console.log("notification permission denied");
+        alert("notification permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const addPin = async () => {
+    try {
+      const isPinned = await RNLockTask?.isAppInLockTaskMode();
+
+      if (!isPinned && AppState.currentState === "active") {
+        RNLockTask?.startLockTask();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const register = () => {
+    ReactNativeForegroundService.register();
   };
 
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
       <StatusBar style="auto" />
+      <Button onPress={register} title="Register" />
+      <Button onPress={addTask} title="Add foreground Service Task" />
       <Button onPress={startTask} title="Start The foreground Service" />
       <Button onPress={stopTask} title="Stop The foreground Service" />
-      <Button onPress={requestCoarseLocation} title="Request Coarse Location" />
+      <Button
+        onPress={requestLocationPermission}
+        title="Request Location Permission"
+      />
+      <Button
+        onPress={requestNotificationSettings}
+        title="Request notification Permission"
+      />
+      <Button onPress={addPin} title="Add pin" />
     </View>
   );
 }
