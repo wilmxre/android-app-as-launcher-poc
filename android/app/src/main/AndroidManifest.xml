@@ -41,9 +41,15 @@
 
         <service
             android:name="com.supersami.foregroundservice.ForegroundService"
+            android:stopWithTask="false"
+            android:enabled="true"
+            android:exported="true"
             android:foregroundServiceType="location" />
         <service
             android:name="com.supersami.foregroundservice.ForegroundServiceTask"
+            android:stopWithTask="false"
+            android:enabled="true"
+            android:exported="true"
             android:foregroundServiceType="location" />
 
         <activity

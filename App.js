@@ -8,13 +8,10 @@ import {
   Text,
   View,
   Button,
-  NativeModules,
   PermissionsAndroid,
 } from "react-native";
 import RNLockTask from "react-native-lock-task";
 import ReactNativeForegroundService from "rn-foreground-service";
-
-const { PermissionModule } = NativeModules;
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +34,9 @@ function HomeScreen() {
       icon: "ic_launcher",
       setOnlyAlertOnce: true,
       color: "#d399f2",
+      importance: "max",
+      visibility: "public",
+      ongoing: true,
     });
   };
 
@@ -44,14 +44,17 @@ function HomeScreen() {
     await ReactNativeForegroundService.stopAll();
   };
 
+  const crashApp = () => {
+    // const timeout = setTimeout(() => {
+    //   clearTimeout(timeout);
+    //   throw new Error("This is an intentional crash after 2 minutes");
+    // }, INTERVAL / 4);
+  };
+
   const requestLocationPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
@@ -68,11 +71,7 @@ function HomeScreen() {
   const requestNotificationSettings = async () => {
     try {
       const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the notification");
@@ -107,7 +106,6 @@ function HomeScreen() {
       <Text>Home Screen</Text>
       <StatusBar style="auto" />
       <Button onPress={register} title="Register" />
-      <Button onPress={addTask} title="Add foreground Service Task" />
       <Button onPress={startTask} title="Start The foreground Service" />
       <Button onPress={stopTask} title="Stop The foreground Service" />
       <Button
@@ -118,6 +116,7 @@ function HomeScreen() {
         onPress={requestNotificationSettings}
         title="Request notification Permission"
       />
+      <Button onPress={crashApp} title="Crash app after 4 minutes" />
       <Button onPress={addPin} title="Add pin" />
     </View>
   );
