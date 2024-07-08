@@ -17,6 +17,26 @@ const Stack = createNativeStackNavigator();
 
 const INTERVAL = 2 * 60 * 1000; // 2 minutes
 
+const createMemoryLeak = () => {
+  const leakyArray = [];
+  const intervalId = setInterval(() => {
+    // Push a new object into the leaky array every second
+    leakyArray.push({ data: new Array(10000000).fill("leak") });
+    console.log("Array length:", leakyArray.length);
+
+    // Log current memory usage (works in Chrome debugger for React Native)
+    if (global.performance && global.performance.memory) {
+      console.log("JS Heap size:", global.performance.memory.usedJSHeapSize);
+    }
+  }, 400);
+
+  // // Clear the interval after 5 minutes
+  // setTimeout(() => {
+  //   clearInterval(intervalId);
+  //   console.log("Stopped memory leak");
+  // }, 5 * 60 * 1000);
+};
+
 function HomeScreen() {
   useEffect(() => {
     ReactNativeForegroundService.add_task(() => console.log("hello"), {
@@ -118,6 +138,7 @@ function HomeScreen() {
       />
       <Button onPress={crashApp} title="Crash app after 4 minutes" />
       <Button onPress={addPin} title="Add pin" />
+      <Button onPress={createMemoryLeak} title="Create Memory leak" />
     </View>
   );
 }
