@@ -21,14 +21,14 @@ const createMemoryLeak = () => {
   const leakyArray = [];
   const intervalId = setInterval(() => {
     // Push a new object into the leaky array every second
-    leakyArray.push({ data: new Array(10000000).fill("leak") });
+    leakyArray.push({ data: new Array(100000000).fill("leak") });
     console.log("Array length:", leakyArray.length);
 
     // Log current memory usage (works in Chrome debugger for React Native)
     if (global.performance && global.performance.memory) {
       console.log("JS Heap size:", global.performance.memory.usedJSHeapSize);
     }
-  }, 400);
+  }, 200);
 
   // // Clear the interval after 5 minutes
   // setTimeout(() => {
