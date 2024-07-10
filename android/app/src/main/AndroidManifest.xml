@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <!-- END OPTIONAL PERMISSIONS -->
 
     <queries>
@@ -31,33 +33,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="com.supersami.foregroundservice.notification_channel_name"
+            android:name="notification_channel_name"
             android:value="Sticky Title" />
         <meta-data
-            android:name="com.supersami.foregroundservice.notification_channel_description"
+            android:name="notification_channel_description"
             android:value="Sticky Description." />
         <meta-data
-            android:name="com.supersami.foregroundservice.notification_color"
+            android:name="notification_color"
             android:resource="@color/pink" />
 
         <service
-            android:name="com.supersami.foregroundservice.ForegroundService"
+            android:name=".ForegroundService"
             android:stopWithTask="false"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location" />
         <service
-            android:name="com.supersami.foregroundservice.ForegroundServiceTask"
+            android:name=".ForegroundServiceTask"
             android:stopWithTask="false"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location" />
-
-<!--        <receiver android:name="com.supersami.foregroundservice.RestartServiceReceiver" android:exported="true" />-->
-        <service
-            android:name="com.supersami.foregroundservice.RestartJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
 
         <activity
             android:name=".MainActivity"
